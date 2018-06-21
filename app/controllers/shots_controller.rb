@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 class ShotsController < ApplicationController
-  before_action :set_shot, only: [:show, :update, :destroy]
+  before_action :set_shot, only: %i[show update destroy]
 
   # GET /shots
   def index
-    @shots = Shot.all
+    @shots = Project.find(params[:project_id]).shots
 
     render json: @shots
   end
@@ -18,7 +20,7 @@ class ShotsController < ApplicationController
     @shot = Shot.new(shot_params)
 
     if @shot.save
-      render json: @shot, status: :created, location: @shot
+      render json: @shot, status: :created
     else
       render json: @shot.errors, status: :unprocessable_entity
     end
@@ -39,13 +41,16 @@ class ShotsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_shot
-      @shot = Shot.find(params[:id])
-    end
 
-    # Only allow a trusted parameter "white list" through.
-    def shot_params
-      params.require(:shot).permit(:project_id, :name, :tag)
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_shot
+    @shot = Shot.find(params[:id])
+  end
+
+  # Only allow a trusted parameter "white list" through.
+  def shot_params
+    params.require(:shot)
+          .merge(project_id: params[:project_id])
+          .permit(:project_id, :name)
+  end
 end
