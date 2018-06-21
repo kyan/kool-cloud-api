@@ -1,6 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe Project, type: :model do
+  it { should have_many(:shots) }
+
   it { should validate_uniqueness_of(:name) }
 
   describe 'new' do
