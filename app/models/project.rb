@@ -5,5 +5,5 @@ class Project < ApplicationRecord
 
   has_many :shots
 
-  validates_uniqueness_of :name
+  validates :name, presence: true, uniqueness: true
 end
