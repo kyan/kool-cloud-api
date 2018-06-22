@@ -4,9 +4,15 @@ rvm:
 cache: bundler
 before_script:
   - cp config/database.travis.yml config/database.yml
-  - RAILS_ENV=test bundle exec rails db:create
-  - RAILS_ENV=test bundle exec rails db:schema:load
+  - RAILS_ENV=test bin/rails db:create
+  - RAILS_ENV=test bin/rails db:schema:load
+services:
+  - postgresql
 addons:
   postgresql: '10'
+  apt:
+    packages:
+      - postgresql-10
+      - postgresql-client-10
 script:
   - bin/rspec
