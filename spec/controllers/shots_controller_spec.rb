@@ -3,57 +3,54 @@
 require 'rails_helper'
 
 RSpec.describe ShotsController, type: :controller do
-  # This should return the minimal set of attributes required to create a valid
-  # Shot. As you add validations to Shot, be sure to
-  # adjust the attributes here as well.
-  let(:valid_attributes) do
-    skip('Add a hash of attributes valid for your model')
-  end
-
-  let(:invalid_attributes) do
-    skip('Add a hash of attributes invalid for your model')
-  end
-
-  # This should return the minimal set of values that should be in the session
-  # in order to pass any filters (e.g. authentication) defined in
-  # ShotsController. Be sure to keep this updated too.
+  let(:valid_attributes) { attributes_for(:shot) }
+  let(:invalid_attributes) { { name: '' } }
   let(:valid_session) { {} }
 
   describe 'GET #index' do
+    let!(:shot) { create(:shot) }
+
     it 'returns a success response' do
-      shot = Shot.create! valid_attributes
-      get :index, params: {}, session: valid_session
-      expect(response).to be_success
+      get :index, params: { project_id: shot.project.id }, session: valid_session
+      expect(response).to be_successful
     end
   end
 
   describe 'GET #show' do
+    let(:shot) { create(:shot) }
+
     it 'returns a success response' do
-      shot = Shot.create! valid_attributes
-      get :show, params: { id: shot.to_param }, session: valid_session
-      expect(response).to be_success
+      get :show, params: { project_id: shot.project.id, id: shot.to_param }, session: valid_session
+      expect(response).to be_successful
     end
   end
 
   describe 'POST #create' do
+    let(:project) { create(:project) }
+
     context 'with valid params' do
       it 'creates a new Shot' do
         expect do
-          post :create, params: { shot: valid_attributes }, session: valid_session
+          post :create, params: {
+            project_id: project.id, shot: valid_attributes
+          }, session: valid_session
         end.to change(Shot, :count).by(1)
       end
 
       it 'renders a JSON response with the new shot' do
-        post :create, params: { shot: valid_attributes }, session: valid_session
+        post :create, params: {
+          project_id: project.id, shot: valid_attributes
+        }, session: valid_session
         expect(response).to have_http_status(:created)
         expect(response.content_type).to eq('application/json')
-        expect(response.location).to eq(shot_url(Shot.last))
       end
     end
 
     context 'with invalid params' do
       it 'renders a JSON response with errors for the new shot' do
-        post :create, params: { shot: invalid_attributes }, session: valid_session
+        post :create, params: {
+          project_id: project.id, shot: invalid_attributes
+        }, session: valid_session
         expect(response).to have_http_status(:unprocessable_entity)
         expect(response.content_type).to eq('application/json')
       end
@@ -62,31 +59,33 @@ RSpec.describe ShotsController, type: :controller do
 
   describe 'PUT #update' do
     context 'with valid params' do
-      let(:new_attributes) do
-        skip('Add a hash of attributes valid for your model')
-      end
+      let(:shot) { create(:shot) }
+      let(:new_attributes) { { name: 'a different name' } }
 
       it 'updates the requested shot' do
-        shot = Shot.create! valid_attributes
-        put :update, params: { id: shot.to_param, shot: new_attributes }, session: valid_session
+        put :update, params: {
+          project_id: shot.project.id, id: shot.to_param, shot: new_attributes
+        }, session: valid_session
         shot.reload
-        skip('Add assertions for updated state')
+        expect(shot.name).to eq(new_attributes[:name])
       end
 
       it 'renders a JSON response with the shot' do
-        shot = Shot.create! valid_attributes
-
-        put :update, params: { id: shot.to_param, shot: valid_attributes }, session: valid_session
+        put :update, params: {
+          project_id: shot.project.id, id: shot.to_param, shot: valid_attributes
+        }, session: valid_session
         expect(response).to have_http_status(:ok)
         expect(response.content_type).to eq('application/json')
       end
     end
 
     context 'with invalid params' do
-      it 'renders a JSON response with errors for the shot' do
-        shot = Shot.create! valid_attributes
+      let(:shot) { create(:shot) }
 
-        put :update, params: { id: shot.to_param, shot: invalid_attributes }, session: valid_session
+      it 'renders a JSON response with errors for the shot' do
+        put :update, params: {
+          project_id: shot.project.id, id: shot.to_param, shot: invalid_attributes
+        }, session: valid_session
         expect(response).to have_http_status(:unprocessable_entity)
         expect(response.content_type).to eq('application/json')
       end
@@ -94,10 +93,13 @@ RSpec.describe ShotsController, type: :controller do
   end
 
   describe 'DELETE #destroy' do
+    let!(:shot) { create(:shot) }
+
     it 'destroys the requested shot' do
-      shot = Shot.create! valid_attributes
       expect do
-        delete :destroy, params: { id: shot.to_param }, session: valid_session
+        delete :destroy, params: {
+          project_id: shot.project.id, id: shot.to_param
+        }, session: valid_session
       end.to change(Shot, :count).by(-1)
     end
   end
