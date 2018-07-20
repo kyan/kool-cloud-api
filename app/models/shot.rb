@@ -5,5 +5,5 @@ class Shot < ApplicationRecord
 
   belongs_to :project
 
-  validates :name, presence: true, uniqueness: { scope: :project_id }
+  validates :title, presence: true, uniqueness: { scope: :project_id }
 end

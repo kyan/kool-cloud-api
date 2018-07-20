@@ -51,6 +51,6 @@ class ShotsController < ApplicationController
   def shot_params
     params.require(:shot)
           .merge(project_id: params[:project_id])
-          .permit(:project_id, :name)
+          .permit(:project_id, :title)
   end
 end

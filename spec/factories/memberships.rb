@@ -1,8 +1,9 @@
 # frozen_string_literal: true
 
 FactoryBot.define do
-  factory :shot do
+  factory :membership do
     project
-    title 'A fancy shot'
+    user
+    role 'animator'
   end
 end

@@ -4,6 +4,10 @@ class Project < ApplicationRecord
   include NameHasher
 
   has_many :shots
+  has_many :memberships
+  has_many :users, through: :memberships
 
-  validates :name, presence: true, uniqueness: true
+  accepts_nested_attributes_for :memberships
+
+  validates :title, presence: true, uniqueness: true
 end

@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe ShotsController, type: :controller do
   let(:valid_attributes) { attributes_for(:shot) }
-  let(:invalid_attributes) { { name: '' } }
+  let(:invalid_attributes) { { title: '' } }
   let(:valid_session) { {} }
 
   describe 'GET #index' do
@@ -60,14 +60,14 @@ RSpec.describe ShotsController, type: :controller do
   describe 'PUT #update' do
     context 'with valid params' do
       let(:shot) { create(:shot) }
-      let(:new_attributes) { { name: 'a different name' } }
+      let(:new_attributes) { { title: 'a different name' } }
 
       it 'updates the requested shot' do
         put :update, params: {
           project_id: shot.project.id, id: shot.to_param, shot: new_attributes
         }, session: valid_session
         shot.reload
-        expect(shot.name).to eq(new_attributes[:name])
+        expect(shot.title).to eq(new_attributes[:title])
       end
 
       it 'renders a JSON response with the shot' do

@@ -16,6 +16,6 @@ module NameHasher
   private
 
   def generate_hash
-    Digest::SHA256.hexdigest "#{name}--#{Time.now}--#{Random.rand(10_000)}"
+    Digest::SHA256.hexdigest "#{title}--#{Time.now}--#{Random.rand(10_000)}"
   end
 end

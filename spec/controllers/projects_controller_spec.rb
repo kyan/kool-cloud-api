@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe ProjectsController, type: :controller do
   let(:valid_attributes) { attributes_for(:project) }
-  let(:invalid_attributes) { { name: '' } }
+  let(:invalid_attributes) { { title: '' } }
   let(:valid_session) { {} }
 
   describe 'GET #index' do
@@ -60,7 +60,7 @@ RSpec.describe ProjectsController, type: :controller do
           id: project.to_param, project: new_attributes
         }, session: valid_session
         project.reload
-        expect(project.name).to eq(new_attributes[:name])
+        expect(project.title).to eq(new_attributes[:title])
       end
 
       it 'renders a JSON response with the project' do
