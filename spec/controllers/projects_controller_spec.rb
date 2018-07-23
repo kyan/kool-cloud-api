@@ -9,10 +9,18 @@ RSpec.describe ProjectsController, type: :controller do
 
   describe 'GET #index' do
     let!(:project) { create(:project) }
+    let!(:private_project) { create(:project, :private) }
 
-    it 'returns a success response' do
-      get :index, params: {}, session: valid_session
-      expect(response).to be_successful
+    context 'when not logged in' do
+      it 'returns public projects' do
+        get :index, params: {}, session: valid_session
+        expect(response.body).to include(project.description)
+      end
+
+      it 'does not return private projects' do
+        get :index, params: {}, session: valid_session
+        expect(response.body).to_not include(private_project.description)
+      end
     end
   end
 

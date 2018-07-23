@@ -10,4 +10,6 @@ class Project < ApplicationRecord
   accepts_nested_attributes_for :memberships
 
   validates :title, presence: true, uniqueness: true
+
+  scope :public_viewable, -> { where(status: 'public') }
 end

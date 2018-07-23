@@ -24,4 +24,14 @@ RSpec.describe Project, type: :model do
       expect { project.save }.to change(project, :tag).from(nil).to(the_hash)
     end
   end
+
+  describe '#public_viewable' do
+    let!(:public_project) { create(:project) }
+    let!(:private_project) { create(:project, :private) }
+
+    subject { described_class.public_viewable }
+
+    it { is_expected.to include(public_project) }
+    it { is_expected.to_not include(private_project) }
+  end
 end

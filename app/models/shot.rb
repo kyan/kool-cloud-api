@@ -6,4 +6,6 @@ class Shot < ApplicationRecord
   belongs_to :project
 
   validates :title, presence: true, uniqueness: { scope: :project_id }
+
+  has_many_attached :images
 end
