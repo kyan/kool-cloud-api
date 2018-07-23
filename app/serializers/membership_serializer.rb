@@ -3,9 +3,5 @@
 class MembershipSerializer < ActiveModel::Serializer
   attributes :project_id, :user_id, :role
 
-  belongs_to :user
-
-  class UserSerializer < ActiveModel::Serializer
-    attributes :email
-  end
+  has_many :users
 end
