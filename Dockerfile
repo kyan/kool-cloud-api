@@ -11,4 +11,4 @@ RUN bundle install
 
 ADD . $APP_HOME
 
-EXPOSE 3000
+EXPOSE 8000
